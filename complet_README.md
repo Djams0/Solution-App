@@ -152,6 +152,38 @@ MySQL : Nous avons choisi MySQL pour sa robustesse et sa scalabilité en tant qu
 
 HTML/CSS : La partie front-end utilise HTML pour la structure et CSS pour le style. Flask génère dynamiquement les pages HTML via ses templates.
 
+# Tests fonctionnels
+Afin de valider le bon fonctionnement des mécanismes de sécurité mis en place, plusieurs tests ont été réalisés :
+
+🔐 Test du hachage et du salage des mots de passe (bcrypt)
+Pour s'assurer que le salage des mots de passe fonctionne correctement :
+
+Deux utilisateurs ont été créés avec le même mot de passe en clair.
+
+Les hachages ont ensuite été comparés dans la base de données MySQL.
+
+Résultat : les hachages sont différents, ce qui prouve que le sel est bien appliqué pour chaque mot de passe.
+Cela renforce la sécurité en empêchant les attaques par table arc-en-ciel.
+
+Un test de comparaison a aussi été fait en désactivant le salage (hachage direct du mot de passe sans sel) :
+
+Dans ce cas, les hachages étaient identiques, démontrant clairement l'apport du sel dans le processus sécurisé de bcrypt.
+
+🔐 Test du chiffrement RSA des messages
+Pour vérifier le bon fonctionnement du chiffrement de bout en bout :
+
+Un message a été envoyé par un utilisateur A à un utilisateur B.
+
+Dans la base de données, le contenu du message est stocké de manière illisible (chiffré avec la clé publique de B).
+
+L’utilisateur B, en se connectant avec sa clé privée locale, a pu déchiffrer et lire le message en clair depuis l’interface.
+
+Un test supplémentaire a été effectué en essayant de lire le message sans la clé privée : le message est resté illisible.
+
+Conclusion : le chiffrement RSA fonctionne comme prévu, garantissant que seul le destinataire peut accéder au contenu du message.
+
+
+
 ## Conclusion
 Ce projet permet de mettre en place une messagerie sécurisée avec un chiffrement de bout en bout et une gestion sécurisée des utilisateurs et de leurs sessions. L'application est simple, mais elle intègre des pratiques de sécurité avancées pour protéger les données des utilisateurs. La fonctionnalité supplémentaire de recherche d'amis via le username permet d'étendre les capacités sociales de l'application, tout en maintenant un haut niveau de sécurité dans les échanges.
 
