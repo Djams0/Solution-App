@@ -1,150 +1,190 @@
-# Messagerie Sécurisée avec Chiffrement de Bout en Bout
+Secure Messaging Application
+Description
+Ce projet est une application de messagerie sécurisée utilisant un chiffrement de bout en bout basé sur RSA. Les utilisateurs peuvent envoyer des messages chiffrés qui ne peuvent être lus que par le destinataire, garantissant ainsi la confidentialité des échanges. L'application propose également un système d'authentification robuste, un stockage sécurisé des clés privées, ainsi qu'une interface simple pour envoyer et recevoir des messages.
 
-## Description
+Les utilisateurs peuvent également :
 
-Ce projet développe une application de messagerie sécurisée en **Python** en utilisant **Flask** pour le backend, **MySQL** pour la gestion de la base de données, et **HTML/CSS** pour la création de l'interface utilisateur web. L'application met en œuvre un **chiffrement de bout en bout** basé sur des clés **RSA** pour garantir que seules les personnes autorisées puissent lire les messages.
+Se connecter ou s'inscrire.
 
-## Fonctionnalités
+Ajouter des amis via un système de recherche basé sur leur username.
 
-- **Chiffrement de bout en bout** des messages avec **RSA** : Seuls l'expéditeur et le destinataire peuvent lire les messages échangés.
-- **Hachage et salage des mots de passe** pour assurer la sécurité des informations d'identification des utilisateurs.
-- **Gestion des sessions** avec **Flask-Session** pour authentifier et suivre les utilisateurs de manière sécurisée.
-- **Interface utilisateur** moderne en **HTML** et **CSS**, hébergée sur un serveur **Flask**.
-- **Base de données MySQL** pour stocker les informations des utilisateurs, messages et clés publiques.
+Discuter avec leurs amis dans des conversations privées.
 
-## Prérequis
+Fonctionnalités principales
+Chiffrement de bout en bout avec RSA pour garantir la confidentialité des messages.
 
-Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
+Authentification sécurisée avec mot de passe haché et salé via bcrypt.
 
-- **Python 3.x** installé sur votre machine.
-- **MySQL** installé et configuré.
-- Un éditeur de texte comme **VSCode** ou **PyCharm**.
+Stockage des clés privées sur l'appareil client pour garantir la sécurité des utilisateurs.
 
-## Installation
+Base de données MySQL pour stocker les informations des utilisateurs et les clés publiques.
 
-### 1. Cloner le projet
+Interface utilisateur simple en utilisant HTML, CSS et Flask.
 
-Clonez le projet en utilisant Git :
+Gestion des amis : Recherche d'amis via le username, ajout d'amis, et démarrage de conversations sécurisées.
 
-git clone <url-du-repository>
+Technologies utilisées
+Langages : Python, HTML, CSS
 
+Framework web : Flask
 
-### 2. Créer un environnement virtuel
+Base de données : MySQL
 
-Créez un environnement virtuel pour éviter les conflits avec les packages système :
+Chiffrement : Bibliothèque cryptography pour RSA et AES
 
-python3 -m venv venv
+Sécurité : bcrypt pour le hachage des mots de passe
 
+Sessions utilisateur : Flask-Session pour la gestion des sessions
 
-### 3. Activer l'environnement virtuel
+Environnement de développement : Virtualenv (venv)
 
-- **Sur Windows** :
-
-venv\Scripts\activate
-
-
-- **Sur Linux/Mac** :
-
-source venv/bin/activate
-
-
-### 4. Installer les dépendances
-
-Installez les dépendances nécessaires :
-
-pip install -r requirements.txt
-
-
-Le fichier `requirements.txt` contient les dépendances suivantes :
-
-- **Flask==2.1.1**
-- **cryptography==3.4.8**
-- **flask-session==0.4.0**
-- **mysql-connector-python==8.0.27**
-- **bcrypt==3.2.0**
-- **python-dotenv==0.19.0**
-
-### 5. Configuration des variables d'environnement
-
-Créez un fichier `.env` à la racine du projet et ajoutez-y les variables suivantes (exemple) :
-
-FLASK_APP=run.py FLASK_ENV=development SECRET_KEY=your_secret_key DB_HOST=localhost DB_USER=root DB_PASSWORD=your_password DB_NAME=messaging_db
-
-
-### 6. Créer la base de données
-
-Créez une base de données **MySQL** pour stocker les informations de l'application.
-
-### 7. Démarrer l'application
-
-Une fois les dépendances installées et la base de données configurée, vous pouvez démarrer l'application en exécutant :
-
-python run.py
-
-rust
+Architecture du projet
+bash
 Copier
 Modifier
-
-L'application sera accessible à l'adresse : `http://127.0.0.1:5000`.
-
-## Architecture du Projet
-
-Voici l'architecture du projet :
-
 app/
 │
-├── services/                # Services métiers (authentification, chat, réseaux sociaux, recherche)
-│   ├── authentification.py  # Gestion de l'authentification et des mots de passe
-│   ├── chat.py              # Gestion des messages chiffrés
-│   ├── home.py              # Accueil de l'application
-│   ├── mes_reseaux.py       # Réseaux sociaux des utilisateurs
-│   └── recherche.py         # Fonctionnalités de recherche dans les messages
+├── services/
+│   ├── authentification.py
+│   ├── chat.py
+│   ├── home.py
+│   ├── mes_reseaux.py
+│   └── recherche.py
 │
-├── static/                  # Fichiers statiques (CSS, JS)
-│   ├── css/                 # Styles CSS
-│   └── js/                  # Scripts JavaScript
+├── static/          # Contient les fichiers CSS et JS
 │
-├── templates/               # Templates HTML
-├── __init__.py              # Initialisation de l'application Flask
-├── config.py                # Configuration de l'application
-├── routes.py                # Définition des route
-├── run.py
-└── private_keys/            # Clés privées stockées localement pour chaque utilisateur
+├── templates/       # Contient les fichiers HTML
 │
-├── flask_session/           # Gestion des sessions
-└── local_storage/           # Stockage local des messages envoyés
+├── __init__.py      # Initialisation de l'application Flask
+├── config.py        # Configuration de l'application (base de données, clés secrètes)
+├── routes.py        # Définition des routes Flask
+│
+├── flask_session/   # Gestion des sessions Flask
+│
+├── local_storage/   # Dossier pour stocker les messages envoyés localement
+│
+├── private_keys/    # Stockage des clés privées des utilisateurs
+│
+├── .env             # Variables d'environnement
+├── requirements.txt # Liste des dépendances
+├── run.py           # Point d'entrée pour exécuter l'application
+│
+venv/                # Environnement virtuel
+Dépendances
+Installer les dépendances
+Avant de faire tourner l'application, il faut installer les dépendances nécessaires. Voici les étapes :
 
-## Fichiers principaux
+Créer un environnement virtuel (si ce n’est pas déjà fait) :
 
-- **app/__init__.py** : Point d'entrée de l'application Flask, initialise les configurations et les extensions comme **Flask-Session**.
-- **app/config.py** : Contient la configuration de l'application, comme les informations de la base de données et les clés secrètes.
-- **app/routes.py** : Définition des routes HTTP qui gèrent les pages de l'application.
-- **run.py** : Le script principal pour démarrer l'application Flask.
+bash
+Copier
+Modifier
+python3 -m venv venv
+Activer l'environnement virtuel :
 
-## Fonctionnalités
+Sur macOS/Linux :
 
-### 1. Chiffrement RSA
+bash
+Copier
+Modifier
+source venv/bin/activate
+Sur Windows :
 
-L'application utilise l'algorithme **RSA** pour chiffrer les messages envoyés. Lorsqu'un utilisateur envoie un message à un autre, il est chiffré avec la clé publique du destinataire, garantissant ainsi que seul ce dernier pourra le déchiffrer avec sa clé privée.
+bash
+Copier
+Modifier
+.\venv\Scripts\activate
+Installer les dépendances :
 
-### 2. Hachage et Salage des mots de passe
+bash
+Copier
+Modifier
+pip install -r requirements.txt
+Dans requirements.txt, tu devras ajouter les bibliothèques suivantes :
 
-Les mots de passe des utilisateurs sont hachés et salés avant d'être stockés en base de données. Le processus utilise **bcrypt**, qui ajoute une couche de sécurité pour éviter les attaques par force brute.
+nginx
+Copier
+Modifier
+cryptography
+flask
+flask-session
+mysql-connector-python
+bcrypt
+python-dotenv
+Configurer les variables d’environnement : Dans le fichier .env, ajoute les variables nécessaires comme suit :
 
-### 3. Gestion des sessions avec Flask
+env
+Copier
+Modifier
+DATABASE_HOST=localhost
+DATABASE_USER=ton_utilisateur
+DATABASE_PASSWORD=ton_mot_de_passe
+DATABASE_NAME=nom_de_ta_bdd
+SECRET_KEY=ta_clé_secrète
+Lancer l'application : Une fois les dépendances installées et les variables d'environnement configurées, tu peux démarrer l'application avec la commande suivante :
 
-Les sessions sont gérées avec **Flask-Session**, ce qui permet de suivre les utilisateurs de manière sécurisée tout au long de leur interaction avec l'application.
+bash
+Copier
+Modifier
+python run.py
+Fonctionnalités
+1. Chiffrement RSA
+Les messages envoyés sont chiffrés avec la clé publique du destinataire et ne peuvent être déchiffrés qu'avec la clé privée correspondante. Ce mécanisme garantit que seuls le destinataire et l'expéditeur peuvent lire les messages échangés.
 
-## Choix Techniques
+Génération des clés : Chaque utilisateur génère une paire de clés (publique et privée) lors de son inscription.
 
-### Flask vs Tkinter
+Chiffrement/déchiffrement des messages : Les messages sont chiffrés avant d'être envoyés et déchiffrés lorsque le destinataire les reçoit.
 
-Au départ, **Tkinter** a été proposé pour l'interface utilisateur. Cependant, nous avons choisi **Flask** avec une interface web pour plusieurs raisons :
+2. Authentification des utilisateurs
+Lors de l'inscription et de la connexion, les mots de passe sont hachés et salés avec bcrypt pour assurer la sécurité des informations d'identification.
 
-- **Accessibilité** : Flask permet de créer une application web accessible depuis n'importe quel navigateur, tandis que Tkinter restreint l'utilisation à une interface de bureau.
-- **Design et Flexibilité** : Flask permet d'utiliser **HTML** et **CSS**, offrant ainsi une plus grande liberté pour la création d'interfaces modernes et réactives.
-- **Séparation des préoccupations** : Avec Flask, nous séparons mieux la logique du serveur et l'interface utilisateur, ce qui facilite la maintenance et l'ajout de nouvelles fonctionnalités.
+Hachage et salage des mots de passe : Les mots de passe sont transformés en une chaîne de caractères irréversible, ce qui empêche un attaquant de retrouver le mot de passe en cas de fuite de données.
 
-## Conclusion
+Vérification du mot de passe : Lors de la connexion, le mot de passe saisi est comparé avec le hachage stocké en base de données.
 
-Ce projet offre une solution de **messagerie sécurisée** avec **chiffrement de bout en bout** et gestion des utilisateurs via une interface web moderne. L'utilisation de **Flask** permet une architecture flexible et évolutive, tout en garantissant la sécurité des communications grâce à des techniques telles que le chiffrement **RSA** et le hachage des mots de passe avec **bcrypt**.
+3. Gestion des sessions
+Les sessions sont gérées par Flask-Session, ce qui permet de maintenir l'état de l'utilisateur entre les différentes requêtes HTTP.
+
+Stockage des sessions : Les sessions sont stockées côté serveur, ce qui évite d'exposer les informations sensibles dans les cookies du client.
+
+4. Base de données MySQL
+Les informations des utilisateurs (comme leurs clés publiques) sont stockées dans une base de données MySQL sécurisée.
+
+Stockage des clés publiques : Chaque utilisateur a sa clé publique stockée dans la base de données.
+
+Gestion des utilisateurs : Les informations des utilisateurs (nom, adresse e-mail, mot de passe haché) sont également stockées dans la base de données.
+
+5. Fonctionnalité de recherche d'amis
+Les utilisateurs peuvent rechercher d'autres utilisateurs par username et leur envoyer une demande d'ami.
+
+Recherche par username : Un utilisateur peut rechercher un autre utilisateur en utilisant son username dans la barre de recherche.
+
+Ajout d'amis : Lorsqu'un utilisateur trouve un autre utilisateur, il peut l'ajouter à sa liste d'amis.
+
+6. Discussions avec les amis
+Une fois qu'un utilisateur a ajouté un autre utilisateur comme ami, ils peuvent démarrer une conversation privée.
+
+Envoi de messages : L'utilisateur peut envoyer des messages chiffrés à ses amis.
+
+Affichage des conversations : Les messages sont affichés de manière sécurisée dans la fenêtre de conversation avec l'ami concerné.
+
+Choix techniques
+Flask : Un framework léger et flexible pour le développement d'applications web en Python. Nous l'avons choisi pour sa simplicité et sa facilité d'intégration avec d'autres bibliothèques comme cryptography.
+
+Cryptography (RSA) : Cette bibliothèque nous permet de gérer les clés publiques et privées ainsi que le chiffrement/déchiffrement des messages de manière sécurisée.
+
+Flask-Session : Nous avons utilisé cette extension pour gérer les sessions utilisateurs côté serveur, garantissant ainsi que les données de session ne sont pas stockées sur le client.
+
+bcrypt : Ce module permet de hacher et de saler les mots de passe de manière sécurisée, ce qui est essentiel pour la protection des informations d'identification des utilisateurs.
+
+MySQL : Nous avons choisi MySQL pour sa robustesse et sa scalabilité en tant que base de données relationnelle pour stocker les informations des utilisateurs et les messages.
+
+HTML/CSS : La partie front-end utilise HTML pour la structure et CSS pour le style. Flask génère dynamiquement les pages HTML via ses templates.
+
+Conclusion
+Ce projet permet de mettre en place une messagerie sécurisée avec un chiffrement de bout en bout et une gestion sécurisée des utilisateurs et de leurs sessions. L'application est simple, mais elle intègre des pratiques de sécurité avancées pour protéger les données des utilisateurs. La fonctionnalité supplémentaire de recherche d'amis via le username permet d'étendre les capacités sociales de l'application, tout en maintenant un haut niveau de sécurité dans les échanges.
+
+Mise en place du projet
+Installation des dépendances : Suivre les étapes ci-dessus pour installer les dépendances nécessaires et configurer l'environnement.
+
+Exécution du projet : Utiliser python run.py pour démarrer l'application une fois la configuration terminée.
