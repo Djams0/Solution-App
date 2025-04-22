@@ -1,16 +1,13 @@
-Secure Messaging Application
-Description
+##Secure Messaging Application
+#Description
 Ce projet est une application de messagerie sécurisée utilisant un chiffrement de bout en bout basé sur RSA. Les utilisateurs peuvent envoyer des messages chiffrés qui ne peuvent être lus que par le destinataire, garantissant ainsi la confidentialité des échanges. L'application propose également un système d'authentification robuste, un stockage sécurisé des clés privées, ainsi qu'une interface simple pour envoyer et recevoir des messages.
 
 Les utilisateurs peuvent également :
 
-Se connecter ou s'inscrire.
+#Ajouter des amis via un système de recherche basé sur leur username.
 
-Ajouter des amis via un système de recherche basé sur leur username.
 
-Discuter avec leurs amis dans des conversations privées.
-
-Fonctionnalités principales
+##Fonctionnalités principales
 Chiffrement de bout en bout avec RSA pour garantir la confidentialité des messages.
 
 Authentification sécurisée avec mot de passe haché et salé via bcrypt.
@@ -23,7 +20,7 @@ Interface utilisateur simple en utilisant HTML, CSS et Flask.
 
 Gestion des amis : Recherche d'amis via le username, ajout d'amis, et démarrage de conversations sécurisées.
 
-Technologies utilisées
+##Technologies utilisées
 Langages : Python, HTML, CSS
 
 Framework web : Flask
@@ -38,7 +35,7 @@ Sessions utilisateur : Flask-Session pour la gestion des sessions
 
 Environnement de développement : Virtualenv (venv)
 
-Architecture du projet
+##Architecture du projet
 bash
 Copier
 Modifier
@@ -70,62 +67,38 @@ app/
 ├── run.py           # Point d'entrée pour exécuter l'application
 │
 venv/                # Environnement virtuel
-Dépendances
+##Dépendances
 Installer les dépendances
 Avant de faire tourner l'application, il faut installer les dépendances nécessaires. Voici les étapes :
 
 Créer un environnement virtuel (si ce n’est pas déjà fait) :
 
-bash
-Copier
-Modifier
 python3 -m venv venv
 Activer l'environnement virtuel :
 
 Sur macOS/Linux :
 
-bash
-Copier
-Modifier
 source venv/bin/activate
 Sur Windows :
 
-bash
-Copier
-Modifier
+
 .\venv\Scripts\activate
 Installer les dépendances :
 
-bash
-Copier
-Modifier
-pip install -r requirements.txt
-Dans requirements.txt, tu devras ajouter les bibliothèques suivantes :
 
-nginx
-Copier
-Modifier
-cryptography
-flask
-flask-session
-mysql-connector-python
-bcrypt
-python-dotenv
+pip install -r requirements.txt
+
 Configurer les variables d’environnement : Dans le fichier .env, ajoute les variables nécessaires comme suit :
 
-env
-Copier
-Modifier
+
 DATABASE_HOST=localhost
 DATABASE_USER=ton_utilisateur
 DATABASE_PASSWORD=ton_mot_de_passe
 DATABASE_NAME=nom_de_ta_bdd
 SECRET_KEY=ta_clé_secrète
-Lancer l'application : Une fois les dépendances installées et les variables d'environnement configurées, tu peux démarrer l'application avec la commande suivante :
+#Lancer l'application : Une fois les dépendances installées et les variables d'environnement configurées, tu peux démarrer l'application avec la commande suivante :
 
-bash
-Copier
-Modifier
+
 python run.py
 Fonctionnalités
 1. Chiffrement RSA
