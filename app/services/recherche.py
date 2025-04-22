@@ -12,46 +12,35 @@ def search_user(username):
     return users
 
 # Envoie une demande d'amitié
-def send_friend_request(sender_id, receiver_id):
+def send_friend_request(user_id_from, user_id_to):
+    if user_id_from == user_id_to:
+        print("Impossible d’envoyer une demande à soi-même.")
+        return
+
+    cursor = mysql.connection.cursor()
+
+    # Vérifie si une relation existe déjà dans un sens ou dans l'autre
+    check_query = """
+        SELECT 1 FROM amis
+        WHERE (user_id_1 = %s AND user_id_2 = %s)
+           OR (user_id_1 = %s AND user_id_2 = %s)
     """
-    Envoie une demande d'amitié d'un utilisateur à un autre.
-    :param sender_id: ID de l'utilisateur qui envoie la demande
-    :param receiver_id: ID de l'utilisateur qui reçoit la demande
-    :return: Tuple (success, message)
-    """
-    print("Module reseau importé avec succès")
+    cursor.execute(check_query, (user_id_from, user_id_to, user_id_to, user_id_from))
+    existing = cursor.fetchone()
 
-    cursor = None
-    try:
-        # Récupération de la connexion MySQL depuis Flask app context
-        db = mysql
-        cursor = db.connection.cursor()
+    if not existing:
+        insert_query = """
+            INSERT INTO amis (user_id_1, user_id_2, statut)
+            VALUES (%s, %s, 'pending')
+        """
+        try:
+            cursor.execute(insert_query, (user_id_from, user_id_to))
+            mysql.connection.commit()
+            print("Demande d'ami insérée dans la base de données.")
+        except Exception as e:
+            print("Erreur lors de l'insertion :", e)
+            mysql.connection.rollback()
+    else:
+        print("Une relation existe déjà entre ces deux utilisateurs.")
 
-        # Vérifie si une relation existe déjà
-        cursor.execute("""
-            SELECT 1 FROM amis
-            WHERE 
-                (user_id_1 = %s AND user_id_2 = %s)
-                OR (user_id_1 = %s AND user_id_2 = %s)
-        """, (sender_id, receiver_id, receiver_id, sender_id))
-
-        if cursor.fetchone():
-            return False, "Une relation existe déjà entre ces utilisateurs."
-
-        # Crée une nouvelle demande d'amitié avec le statut 'pending'
-        cursor.execute("""
-            INSERT INTO amis (user_id_1, user_id_2, statut, date_amitie)
-            VALUES (%s, %s, %s, NOW())
-        """, (sender_id, receiver_id, 'pending'))
-
-        db.connection.commit()
-        return True, "Demande d'amitié envoyée avec succès."
-
-    except Exception as e:
-        if db:
-            db.connection.rollback()
-        return False, f"Erreur lors de l'envoi de la demande : {str(e)}"
-
-    finally:
-        if cursor:
-            cursor.close()
+    cursor.close()

@@ -106,19 +106,11 @@ def recherche():
     else:
         return redirect(url_for('main.login'))
 
-@main.route('/send_friend_request', methods=['POST'])
-def send_friend_request():
-    if 'user_id' not in session:
-        flash("Vous devez être connecté pour envoyer une demande d'amitié.", 'warning')
+@main.route('/send_friend_request/<int:user_id_to>', methods=['POST'])
+def send_request(user_id_to):
+    if 'user_id' in session:
+        user_id_from = session['user_id']
+        send_friend_request(user_id_from, user_id_to)
+        return redirect(url_for('main.recherche'))
+    else:
         return redirect(url_for('main.login'))
-
-    friend_id = request.form.get('friend_id')
-    user_id = session['user_id']
-
-    if not friend_id:
-        flash("Identifiant de l'utilisateur manquant.", 'danger')
-        return redirect(url_for('main.reseau'))
-
-    success, message = send_friend_request(user_id, friend_id)
-    flash(message, 'success' if success else 'danger')
-    return redirect(url_for('main.reseau'))
