@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Réseaux</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { margin-top: 30px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+        .username { font-weight: bold; }
+        .date { color: gray; font-size: 0.9em; }
+        .button { margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Bienvenue, {{ username }} 👋</h1>
+
+    <h2>Demandes envoyées</h2>
+    {% if demandes_envoyees %}
+        <ul>
+            {% for demande in demandes_envoyees %}
+                <li>
+                    <span class="username">{{ demande.username }}</span>
+                    <span class="date">— envoyée le {{ demande.date_amitie.strftime('%d/%m/%Y') }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune demande envoyée.</p>
+    {% endif %}
+
+    <h2>Demandes reçues</h2>
+    {% if demandes_recues %}
+        <ul>
+            {% for demande in demandes_recues %}
+                <li>
+                    <span class="username">{{ demande.username }}</span>
+                    <span class="date">— reçue le {{ demande.date_amitie.strftime('%d/%m/%Y') }}</span>
+
+                    <!-- Boutons d'acceptation et de rejet -->
+                    <form action="{{ url_for('main.update_request', user_id_to=demande.id, action='accept') }}" method="POST" style="display:inline;">
+                        <button class="button" type="submit">Accepter</button>
+                    </form>
+                    <form action="{{ url_for('main.update_request', user_id_to=demande.id, action='reject') }}" method="POST" style="display:inline;">
+                        <button class="button" type="submit">Refuser</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune demande reçue.</p>
+    {% endif %}
+</body>
+</html>

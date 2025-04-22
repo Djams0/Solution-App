@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Bienvenue, {{ username }} !</h1>
+    <a href="{{ url_for('main.mes_reseaux') }}">Mes Réseaux</a>
+
+
+    <ul>
+        {% for friend in friends %}
+            <li>
+                {% if friend.statut == 'accept' %}
+                    <a href="{{ url_for('main.chat', ami_id=friend.id) }}">
+                        <strong>{{ friend.username }}</strong>
+                    </a> - 
+                {% else %}
+                    <strong>{{ friend.username }}</strong> -
+                {% endif %}
+                <em>{{ friend.statut }}</em>
+                (depuis {{ friend.date_amitie.strftime('%d/%m/%Y') if friend.date_amitie else 'inconnue' }})
+            </li>
+        {% endfor %}
+    </ul>    
+    <p>Vous êtes connecté.</p>
+    <a href="{{ url_for('main.logout') }}">Se déconnecter</a>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Réseau</title>
+    <link rel="stylesheet" href="../static/css/reseau.css">
+</head>
+<body>
+    <a href="{{ url_for('main.index') }}" class="back-arrow" title="Retour à l'accueil">&#8592; Retour</a>
+
+    <h1>Mon Réseau</h1>
+    <p>Bienvenue sur votre page réseau, {{ username }} !</p>
+
+    <!-- Barre de recherche -->
+    <div class="search-container">
+        <h2>Rechercher un utilisateur</h2>
+        <form id="search-form">
+            <input type="text" id="search-query" placeholder="Entrez un nom d'utilisateur" required>
+            <button type="submit" class="btn btn-search">Rechercher</button>
+        </form>
+    </div>
+
+    <!-- Résultats de recherche -->
+    <div id="search-results"></div>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="received">Demandes reçues</div>
+        <div class="tab" data-tab="sent">Demandes envoyées</div>
+        <div class="tab" data-tab="rejected">Demandes rejetées</div>
+        <div class="tab" data-tab="suggestions">Suggestions</div>
+    </div>
+
+    <!-- Demandes reçues -->
+    <div id="received" class="tab-content active">
+        <div class="section">
+            <h2>Demandes reçues</h2>
+            {% set found = false %}
+            {% for request in received_requests %}
+                {% if request.status == 'pending' %}
+                    {% set found = true %}
+                    <div class="request-card">
+                        <div class="request-info">
+                            <h3>{{ request.sender.username }}</h3>
+                            <p>Demandé le {{ request.date_amitie.strftime('%d/%m/%Y à %H:%M') }}</p>
+                            <span class="status status-pending">En attente</span>
+                        </div>
+                        <div class="request-actions">
+                            <form action="{{ url_for('main.handle_friend_request') }}" method="POST">
+                                <input type="hidden" name="request_id" value="{{ request.id }}">
+                                <input type="hidden" name="action" value="accept">
+                                <button type="submit" class="btn btn-accept">Accepter</button>
+                            </form>
+                            <form action="{{ url_for('main.handle_friend_request') }}" method="POST">
+                                <input type="hidden" name="request_id" value="{{ request.id }}">
+                                <input type="hidden" name="action" value="reject">
+                                <button type="submit" class="btn btn-reject">Refuser</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if not found %}
+                <p class="empty-message">Aucune demande reçue pour le moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Demandes envoyées -->
+    <div id="sent" class="tab-content">
+        <div class="section">
+            <h2>Demandes envoyées</h2>
+            {% set found = false %}
+            {% for request in pending_requests %}
+                {% if request.type == 'sent' and request.status == 'pending' %}
+                    {% set found = true %}
+                    <div class="request-card">
+                        <div class="request-info">
+                            <h3>{{ request.username }}</h3>
+                            <p>Envoyée le {{ request.date.strftime('%d/%m/%Y à %H:%M') }}</p>
+                            <span class="status status-pending">En attente</span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if not found %}
+                <p class="empty-message">Aucune demande envoyée en attente.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Demandes rejetées -->
+    <div id="rejected" class="tab-content">
+        <div class="section">
+            <h2>Demandes rejetées</h2>
+            {% set found = false %}
+            {% for request in pending_requests %}
+                {% if request.status == 'rejected' %}
+                    {% set found = true %}
+                    <div class="request-card">
+                        <div class="request-info">
+                            <h3>{{ request.username }}</h3>
+                            <p>Le {{ request.date.strftime('%d/%m/%Y à %H:%M') }}</p>
+                            <span class="status status-rejected">Rejetée</span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if not found %}
+                <p class="empty-message">Aucune demande rejetée.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Gestion des onglets
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+    
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    
+        // Fonction AJAX pour la recherche
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            e.preventDefault();  // Empêche l'envoi du formulaire classique
+    
+            const query = document.getElementById('search-query').value;
+    
+            // Effectuer la requête AJAX pour rechercher les utilisateurs
+            fetch(/search_user?query=${query}, {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('search-results');
+                resultsDiv.innerHTML = '';  // Vider les résultats précédents
+    
+                if (data.error) {
+                    resultsDiv.innerHTML = <p class="error-message">${data.error}</p>;
+                } else if (data.results.length > 0) {
+                    let html = '<h2>Résultats de la recherche :</h2>';
+                    data.results.forEach(user => {
+                        html += `
+                            <div class="user-card">
+                                <h3>${user.username}</h3>
+                                <form action="/send_friend_request" method="POST">
+                                    <input type="hidden" name="friend_id" value="${user.id}">
+                                    <button type="submit" class="btn btn-accept">Envoyer une demande</button>
+                                </form>
+                            </div>
+                        `;
+                    });
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = '<p>Aucun utilisateur trouvé.</p>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('search-results').innerHTML = '<p class="error-message">Erreur lors de la recherche.</p>';
+            });
+        });
+    </script>
+    
+</body>
+</html>
