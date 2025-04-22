@@ -1,13 +1,13 @@
-##Secure Messaging Application
-#Description
+## Secure Messaging Application
+# Description
 Ce projet est une application de messagerie sécurisée utilisant un chiffrement de bout en bout basé sur RSA. Les utilisateurs peuvent envoyer des messages chiffrés qui ne peuvent être lus que par le destinataire, garantissant ainsi la confidentialité des échanges. L'application propose également un système d'authentification robuste, un stockage sécurisé des clés privées, ainsi qu'une interface simple pour envoyer et recevoir des messages.
 
 Les utilisateurs peuvent également :
 
-#Ajouter des amis via un système de recherche basé sur leur username.
+# Ajouter des amis via un système de recherche basé sur leur username.
 
 
-##Fonctionnalités principales
+## Fonctionnalités principales
 Chiffrement de bout en bout avec RSA pour garantir la confidentialité des messages.
 
 Authentification sécurisée avec mot de passe haché et salé via bcrypt.
@@ -20,7 +20,7 @@ Interface utilisateur simple en utilisant HTML, CSS et Flask.
 
 Gestion des amis : Recherche d'amis via le username, ajout d'amis, et démarrage de conversations sécurisées.
 
-##Technologies utilisées
+## Technologies utilisées
 Langages : Python, HTML, CSS
 
 Framework web : Flask
@@ -35,10 +35,8 @@ Sessions utilisateur : Flask-Session pour la gestion des sessions
 
 Environnement de développement : Virtualenv (venv)
 
-##Architecture du projet
-bash
-Copier
-Modifier
+## Architecture du projet
+
 app/
 │
 ├── services/
@@ -67,7 +65,7 @@ app/
 ├── run.py           # Point d'entrée pour exécuter l'application
 │
 venv/                # Environnement virtuel
-##Dépendances
+## Dépendances
 Installer les dépendances
 Avant de faire tourner l'application, il faut installer les dépendances nécessaires. Voici les étapes :
 
@@ -96,7 +94,7 @@ DATABASE_USER=ton_utilisateur
 DATABASE_PASSWORD=ton_mot_de_passe
 DATABASE_NAME=nom_de_ta_bdd
 SECRET_KEY=ta_clé_secrète
-#Lancer l'application : Une fois les dépendances installées et les variables d'environnement configurées, tu peux démarrer l'application avec la commande suivante :
+# Lancer l'application : Une fois les dépendances installées et les variables d'environnement configurées, tu peux démarrer l'application avec la commande suivante :
 
 
 python run.py
@@ -141,7 +139,7 @@ Envoi de messages : L'utilisateur peut envoyer des messages chiffrés à ses ami
 
 Affichage des conversations : Les messages sont affichés de manière sécurisée dans la fenêtre de conversation avec l'ami concerné.
 
-Choix techniques
+## Choix techniques
 Flask : Un framework léger et flexible pour le développement d'applications web en Python. Nous l'avons choisi pour sa simplicité et sa facilité d'intégration avec d'autres bibliothèques comme cryptography.
 
 Cryptography (RSA) : Cette bibliothèque nous permet de gérer les clés publiques et privées ainsi que le chiffrement/déchiffrement des messages de manière sécurisée.
@@ -154,7 +152,7 @@ MySQL : Nous avons choisi MySQL pour sa robustesse et sa scalabilité en tant qu
 
 HTML/CSS : La partie front-end utilise HTML pour la structure et CSS pour le style. Flask génère dynamiquement les pages HTML via ses templates.
 
-Conclusion
+## Conclusion
 Ce projet permet de mettre en place une messagerie sécurisée avec un chiffrement de bout en bout et une gestion sécurisée des utilisateurs et de leurs sessions. L'application est simple, mais elle intègre des pratiques de sécurité avancées pour protéger les données des utilisateurs. La fonctionnalité supplémentaire de recherche d'amis via le username permet d'étendre les capacités sociales de l'application, tout en maintenant un haut niveau de sécurité dans les échanges.
 
 Mise en place du projet
