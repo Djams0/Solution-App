@@ -1,0 +1,104 @@
+    body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-color: #f4f7f6;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    h1 {
+        background-color: #075e54;
+        color: white;
+        padding: 20px;
+        margin: 0;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .btn-retour {
+        display: inline-block;
+        margin: 20px;
+        padding: 10px 20px;
+        background-color: #25d366;
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .btn-retour:hover {
+        background-color: #20c05a;
+    }
+
+    h2 {
+        margin-top: 30px;
+        font-size: 22px;
+        color: #075e54;
+        text-align: center;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px;
+    }
+
+    li {
+        background: white;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    li:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    .username {
+        font-size: 16px;
+        font-weight: bold;
+        color: #075e54;
+    }
+
+    .date {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .button {
+        padding: 8px 16px;
+        margin: 0 5px;
+        background-color: #25d366;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .button:hover {
+        background-color: #20c05a;
+    }
+
+    .button.reject {
+        background-color: #dc3545;
+    }
+
+    .button.reject:hover {
+        background-color: #c82333;
+    }
+
+    p {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #555;
+    }

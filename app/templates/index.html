@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="../static/css/index.css">
     <title>Accueil</title>
 </head>
 <body>
@@ -12,19 +13,23 @@
     <ul>
         {% for friend in friends %}
             <li>
-                {% if friend.statut == 'accept' %}
-                    <a href="{{ url_for('main.chat', ami_id=friend.id) }}">
+                <div class="card-header">
+                    {% if friend.statut == 'accept' %}
+                        <a href="{{ url_for('main.chat', ami_id=friend.id) }}">
+                            <strong>{{ friend.username }}</strong>
+                        </a>
+                    {% else %}
                         <strong>{{ friend.username }}</strong>
-                    </a> - 
-                {% else %}
-                    <strong>{{ friend.username }}</strong> -
-                {% endif %}
-                <em>{{ friend.statut }}</em>
-                (depuis {{ friend.date_amitie.strftime('%d/%m/%Y') if friend.date_amitie else 'inconnue' }})
-            </li>
+                    {% endif %}
+                    <em>{{ friend.statut }}</em>
+                </div>
+                <div class="card-date">
+                    (depuis {{ friend.date_amitie.strftime('%d/%m/%Y') if friend.date_amitie else 'inconnue' }})
+                </div>
+            </li>        
         {% endfor %}
     </ul>    
     <p>Vous êtes connecté.</p>
-    <a href="{{ url_for('main.logout') }}">Se déconnecter</a>
+    <a class="logout-link" href="{{ url_for('main.logout') }}">Se déconnecter</a>
 </body>
 </html>
